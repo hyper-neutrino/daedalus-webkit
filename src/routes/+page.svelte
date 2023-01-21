@@ -1,5 +1,18 @@
 <script lang="ts">
-    import Page from "$lib/Page.svelte";
+    import MetaTags from "$lib/MetaTags.svelte";
+    import Navbar from "$lib/Navbar.svelte";
 </script>
 
-<Page title="yes">Hello, World!</Page>
+<html lang="en">
+    <head>
+        <MetaTags title="hello" />
+    </head>
+
+    <Navbar background="black" foreground="blue">Hello</Navbar>
+
+    top <br />
+
+    {#each new Array(100) as _}
+        a <br />
+    {/each}
+</html>
