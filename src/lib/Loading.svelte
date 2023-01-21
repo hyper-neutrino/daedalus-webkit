@@ -1,8 +1,8 @@
 <script lang="ts">
-    export let data: any;
+    export let data: any = null;
 </script>
 
-{#if data}
+{#if data !== null && data !== undefined}
     <slot />
 {:else}
     Loading...
