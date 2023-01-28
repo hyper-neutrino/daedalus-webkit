@@ -128,7 +128,7 @@ export class DiscordOAuth2 {
         });
 
         if (!request.ok)
-            return new Response(JSON.stringify({ error: "No refresh token found." }), {
+            return new Response(JSON.stringify({ error: "Invalid refresh token." }), {
                 status: 500,
             });
 
