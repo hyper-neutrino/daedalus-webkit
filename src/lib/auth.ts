@@ -33,7 +33,8 @@ export class DiscordOAuth2 {
 
     login: RequestHandler = async ({ cookies, url }) => {
         let state = "";
-        for (let x = 0; x < 32; x++) state += String.fromCharCode(Math.floor(Math.random() * 94));
+        for (let x = 0; x < 32; x++)
+            state += String.fromCharCode(Math.floor(Math.random() * 94) + 33);
 
         const headers = new Headers({
             Location: `${this.url}&state=${encodeURIComponent(
