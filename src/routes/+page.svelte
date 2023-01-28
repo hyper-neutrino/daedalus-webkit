@@ -1,5 +1,5 @@
 <script>
-    import { LoadingSpinner } from "$lib";
+    import { Textarea } from "$lib";
 </script>
 
-<LoadingSpinner size={200} />
+<Textarea name="test" />
