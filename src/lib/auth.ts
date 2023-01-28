@@ -68,7 +68,6 @@ export class DiscordOAuth2 {
             grant_type: "authorization_code",
             redirect_uri: this.callback_url,
             code,
-            scope: this.scope,
         };
 
         const request = await fetch("https://discord.com/api/v8/oauth2/token", {
@@ -117,7 +116,6 @@ export class DiscordOAuth2 {
             client_secret: this.client_secret,
             grant_type: "refresh_token",
             refresh_token: discord_refresh_token as string,
-            scope: this.scope,
         };
 
         const request = await fetch("https://discord.com/api/v8/oauth2/token", {
