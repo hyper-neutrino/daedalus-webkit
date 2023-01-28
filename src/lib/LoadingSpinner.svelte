@@ -18,22 +18,20 @@
 </script>
 
 <div>
-    <svg width="{size}px" height="{size}px">
+    <svg viewBox="0 0 100 100" style="width: {size}px; height: {size}px">
         <polygon
             id="large"
-            points="{size * 0.5},{size * 0.95} {size * 0.89},{size * 0.275} {size * 0.11},{size *
-                0.275}"
+            points="50,95 89,27.5 11,27.5"
             stroke={color}
-            stroke-width={2 + size * 0.02}
+            stroke-width="4"
             fill="none"
         />
         <polygon
             id="small"
-            points="{size * 0.5},{size * 0.86} {size * 0.812},{size * 0.32} {size * 0.186},{size *
-                0.32}"
+            points="50,86 81.2,32 18.6,32"
             stroke={color}
             opacity="32%"
-            stroke-width={3 + size * 0.02}
+            stroke-width="5"
             fill="none"
         />
     </svg>
@@ -53,21 +51,6 @@
         0% {
             transform: rotateZ(0deg);
         }
-
-        60% {
-            transform: rotateZ(120deg);
-        }
-
-        100% {
-            transform: rotateZ(360deg);
-        }
-    }
-
-    @keyframes backspin {
-        0% {
-            transform: rotateZ(0deg);
-        }
-
         100% {
             transform: rotateZ(360deg);
         }
@@ -75,11 +58,11 @@
 
     #large {
         transform-origin: 50% 50%;
-        animation: 2500ms spin linear infinite;
+        animation: 2500ms spin cubic-bezier(0.75, 0.25, 0.25, 0.75) infinite;
     }
 
     #small {
         transform-origin: 50% 50%;
-        animation: 8000ms backspin linear infinite reverse;
+        animation: 7500ms spin linear infinite reverse;
     }
 </style>

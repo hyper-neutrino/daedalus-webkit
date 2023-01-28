@@ -1,5 +1,5 @@
 <script>
-    import Redirect from "$lib/Redirect.svelte";
+    import { LoadingSpinner } from "$lib";
 </script>
 
-<Redirect to="https://example.com/'" after={1.5} />
+<LoadingSpinner size={200} />
