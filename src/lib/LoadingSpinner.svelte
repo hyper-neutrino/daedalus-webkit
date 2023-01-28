@@ -1,5 +1,6 @@
 <script lang="ts">
-    export let color: string = "#009688";
+    export let foreground: string = "#009688";
+    export let background: string = "#00968860";
     export let size: number = 100;
     export let text: string | string[] = ["Loading", "Loading.", "Loading..", "Loading..."];
 
@@ -20,18 +21,17 @@
 <div>
     <svg viewBox="0 0 100 100" style="width: {size}px; height: {size}px">
         <polygon
-            id="large"
-            points="50,95 89,27.5 11,27.5"
-            stroke={color}
-            stroke-width="4"
+            id="small"
+            points="50,86 81.2,32 18.6,32"
+            stroke={background}
+            stroke-width="5"
             fill="none"
         />
         <polygon
-            id="small"
-            points="50,86 81.2,32 18.6,32"
-            stroke={color}
-            opacity="32%"
-            stroke-width="5"
+            id="large"
+            points="50,95 89,27.5 11,27.5"
+            stroke={foreground}
+            stroke-width="4"
             fill="none"
         />
     </svg>
