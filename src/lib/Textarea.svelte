@@ -1,9 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    export let min_height: number = 0;
+
     function update() {
         this.style.height = "0";
-        this.style.height = this.scrollHeight + "px";
+        this.style.height = Math.max(min_height, this.scrollHeight) + "px";
     }
 
     let element: any;
