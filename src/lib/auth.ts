@@ -121,10 +121,13 @@ export class DiscordOAuth2 {
         const request = await fetch("https://discord.com/api/v8/oauth2/token", {
             method: "post",
             body: new URLSearchParams(data),
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
         });
 
-        if (!request.ok) return request;
+        if (!request.ok)
+            return new Response(JSON.stringify({ error: "Invalid refresh token." }), {
+                status: 500,
+            });
 
         const response = await request.json();
 
