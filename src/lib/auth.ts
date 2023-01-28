@@ -124,10 +124,7 @@ export class DiscordOAuth2 {
             headers: { "Content-Type": "application/json" },
         });
 
-        if (!request.ok)
-            return new Response(JSON.stringify({ error: "Invalid refresh token." }), {
-                status: 500,
-            });
+        if (!request.ok) return request;
 
         const response = await request.json();
 
