@@ -1,9 +1,5 @@
-<script lang="ts">
-    import LoadingSpinner from "$lib/LoadingSpinner.svelte";
-
-    let text = ["a", "b"];
-
-    setTimeout(() => (text = ["a", "b", "c"]), 5000);
+<script>
+    import Redirect from "$lib/Redirect.svelte";
 </script>
 
-<LoadingSpinner size={50} {text} />
+<Redirect to="https://example.com/'" after={1.5} />
