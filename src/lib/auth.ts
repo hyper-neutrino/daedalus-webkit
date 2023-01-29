@@ -177,23 +177,23 @@ export class DiscordOAuth2 {
     check: (
         event: RequestEvent<Partial<Record<string, string>>, string | null>,
         refresh_path: string,
-    ) => Promise<void> = async (event, refresh_path) => {
+    ) => Promise<{ access_token: string; refresh_token: string; user: any } | undefined> = async (
+        event,
+        refresh_path,
+    ) => {
         const cookies = event.cookies;
 
-        const discord_access_token = cookies.get("discord_access_token");
-        const discord_refresh_token = cookies.get("discord_refresh_token");
+        let access_token: string | undefined = cookies.get("discord_access_token");
+        let refresh_token: string | undefined = cookies.get("discord_refresh_token");
 
-        let access_token: string | undefined;
-
-        if (discord_refresh_token && !discord_access_token) {
-            const request = await fetch(
-                `${this.domain}${refresh_path}?code=${discord_refresh_token}`,
-            );
+        if (refresh_token && !access_token) {
+            const request = await fetch(`${this.domain}${refresh_path}?code=${refresh_token}`);
 
             const response = await request.json();
 
             access_token = response.discord_access_token;
-        } else access_token = discord_access_token;
+            refresh_token = response.discord_refresh_token;
+        }
 
         if (access_token) {
             const request = await fetch("https://discord.com/api/v8/users/@me", {
@@ -203,7 +203,12 @@ export class DiscordOAuth2 {
             if (request.ok) {
                 const response = await request.json();
 
-                if (response.id) return response;
+                if (response.id)
+                    return {
+                        access_token: access_token as string,
+                        refresh_token: refresh_token as string,
+                        user: response,
+                    };
             }
         }
     };
