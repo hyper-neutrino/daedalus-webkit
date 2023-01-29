@@ -2,9 +2,14 @@
     export let open: boolean = false;
     export let background_color: string = "white";
     export let overlay_color: string = "#00000077";
+
+    function close() {
+        open = false;
+        dispatchEvent(new Event("close"));
+    }
 </script>
 
-<svelte:window on:keydown={(e) => e.key === "Escape" && (open = false)} />
+<svelte:window on:keydown={(e) => e.key === "Escape" && close()} />
 
 <div class="modal {open ? '' : 'closed'}" style="background-color: {background_color};">
     <slot />
@@ -13,8 +18,8 @@
 <div
     class="overlay {open ? '' : 'closed'}"
     style="background-color: {overlay_color};"
-    on:click={() => (open = false)}
-    on:keydown={() => (open = false)}
+    on:click={close}
+    on:keydown={close}
 />
 
 <style lang="scss">
