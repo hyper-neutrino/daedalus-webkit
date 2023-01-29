@@ -1,15 +1,7 @@
-<script>
-    import { Collapsable } from "$lib";
+<script lang="ts">
+    import { SaveChanges } from "$lib";
+    let unsaved: boolean = false;
 </script>
 
-<link
-    rel="stylesheet"
-    type="text/css"
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-/>
-
-<Collapsable title="collapsable">
-    Hello
-    <br />
-    World
-</Collapsable>
+<a href={"javascript:void(0)"} on:click={() => (unsaved = !unsaved)}>toggle</a>
+<SaveChanges {unsaved} />
