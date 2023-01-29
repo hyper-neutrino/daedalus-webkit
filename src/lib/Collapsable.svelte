@@ -16,7 +16,7 @@
     <i class="material-icons {open ? 'spin' : ''}" style="transition: {duration}ms ease-in-out"
         >chevron_right</i
     >
-    <span style="padding-left: 1em">{title}</span>
+    <span style="padding-left: 1em">{@html title}</span>
 </div>
 <div
     class="drawer {open ? 'open' : 'closed'}"
