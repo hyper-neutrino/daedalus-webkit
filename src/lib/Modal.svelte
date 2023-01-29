@@ -1,11 +1,15 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+
     export let open: boolean = false;
     export let background_color: string = "white";
     export let overlay_color: string = "#00000077";
 
+    const dispatch = createEventDispatcher();
+
     function close() {
         open = false;
-        dispatchEvent(new Event("close"));
+        dispatch("close");
     }
 </script>
 
