@@ -45,7 +45,6 @@
 
         cursor: default;
         padding: 0.5em 2em;
-        font-family: "Genshin", serif;
     }
 
     .header {
