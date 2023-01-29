@@ -37,8 +37,6 @@
         right: 20%;
         max-height: 50%;
 
-        display: flex;
-        flex-direction: column;
         border-radius: 5px;
         transition: 200ms ease-in-out;
 
