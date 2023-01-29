@@ -2,7 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    export let unsaved = false;
+    export let unsaved: boolean = false;
+    export let saving: boolean = false;
 
     export let background: string = "#222";
     export let foreground: string = "#ccc";
@@ -21,22 +22,23 @@
     You have unsaved changes
 
     <div>
-        <a
-            id="reset"
-            href={"javascript:void(0)"}
-            on:click={() => dispatch("reset")}
-            style="background-color: {reset_background}; color: {reset_foreground}"
-        >
-            Reset
-        </a>
-        <a
+        {#if !saving}
+            <button
+                id="reset"
+                on:click={() => dispatch("reset")}
+                style="background-color: {reset_background}; color: {reset_foreground}"
+            >
+                Reset
+            </button>
+        {/if}
+        <button
             id="save"
-            href={"javascript:void(0)"}
             on:click={() => dispatch("save")}
             style="background-color: {save_background}; color: {save_foreground}"
+            disabled={saving}
         >
-            Save
-        </a>
+            {saving ? "Saving..." : "Save"}
+        </button>
     </div>
 </div>
 
@@ -57,6 +59,7 @@
 
         display: flex;
         flex-direction: row;
+        align-items: center;
         justify-content: space-between;
 
         transform: translateY(100%);
@@ -67,9 +70,14 @@
         transition: 250ms bottom cubic-bezier(0, 1.5, 1, 1);
     }
 
-    a {
-        text-decoration: none;
-        padding: 0.25em 1em;
+    button {
+        padding: 0.75em 1.5em;
+        border: none;
+        outline: none;
         border-radius: 5px;
+
+        &:disabled {
+            opacity: 80%;
+        }
     }
 </style>
