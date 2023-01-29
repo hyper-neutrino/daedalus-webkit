@@ -1,4 +1,4 @@
-import type { RequestEvent, RequestHandler } from "@sveltejs/kit";
+import type { Handle, RequestEvent, RequestHandler } from "@sveltejs/kit";
 
 const cookie_config = { path: "/", httpOnly: true, sameSite: "lax" } as const;
 
@@ -6,6 +6,7 @@ export class DiscordOAuth2 {
     client_id: string;
     client_secret: string;
     callback_url: string;
+    refresh_url: string;
     domain: string;
     scope: string;
 
@@ -15,12 +16,14 @@ export class DiscordOAuth2 {
         client_id: string,
         client_secret: string,
         callback_url: string,
+        refresh_url: string,
         domain: string,
         scopes: string[] = ["identify"],
     ) {
         this.client_id = client_id;
         this.client_secret = client_secret;
         this.callback_url = callback_url;
+        this.refresh_url = refresh_url;
         this.domain = domain;
         this.scope = scopes.join(" ");
 
@@ -152,7 +155,7 @@ export class DiscordOAuth2 {
             }),
         );
 
-        return new Response(JSON.stringify({ discord_access_token: response.access_token }), {
+        return new Response(JSON.stringify(response), {
             headers,
             status: 200,
         });
@@ -174,25 +177,24 @@ export class DiscordOAuth2 {
         return new Response(null, { headers, status: 302 });
     };
 
-    check: (
-        event: RequestEvent<Partial<Record<string, string>>, string | null>,
-        refresh_path: string,
-    ) => Promise<{ access_token: string; refresh_token: string; user: any } | undefined> = async (
-        event,
-        refresh_path,
-    ) => {
-        const cookies = event.cookies;
+    check: Handle = async ({ event, resolve }) => {
+        const { cookies, locals } = event;
 
         let access_token: string | undefined = cookies.get("discord_access_token");
         let refresh_token: string | undefined = cookies.get("discord_refresh_token");
 
+        let expires_in: number = 0;
+        let refreshed: boolean = false;
+
         if (refresh_token && !access_token) {
-            const request = await fetch(`${this.domain}${refresh_path}?code=${refresh_token}`);
+            const request = await fetch(`${this.refresh_url}?code=${refresh_token}`);
 
             const response = await request.json();
 
-            access_token = response.discord_access_token;
-            refresh_token = response.discord_refresh_token;
+            access_token = response.access_token;
+            refresh_token = response.refresh_token;
+            expires_in = response.expires_in;
+            refreshed = true;
         }
 
         if (access_token) {
@@ -203,13 +205,33 @@ export class DiscordOAuth2 {
             if (request.ok) {
                 const response = await request.json();
 
-                if (response.id)
-                    return {
-                        access_token: access_token as string,
-                        refresh_token: refresh_token as string,
-                        user: response,
-                    };
+                if (response.id) {
+                    (locals as any).user = { ...response };
+                    const output = await resolve(event);
+
+                    if (refreshed) {
+                        output.headers.append(
+                            "Set-Cookie",
+                            cookies.serialize("discord_access_token", access_token, {
+                                ...cookie_config,
+                                expires: new Date(Date.now() + expires_in),
+                            }),
+                        );
+
+                        output.headers.append(
+                            "Set-Cookie",
+                            cookies.serialize("discord_refresh_token", refresh_token as string, {
+                                ...cookie_config,
+                                expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                            }),
+                        );
+                    }
+
+                    return output;
+                }
             }
         }
+
+        return await resolve(event);
     };
 }
