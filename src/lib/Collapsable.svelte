@@ -7,15 +7,28 @@
     export let open: boolean = false;
 </script>
 
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+/>
+
 <div
     class="header"
     on:click={() => (open = !open)}
     on:keydown={() => (open = !open)}
     style="color: {header_color}; background-color: {color}"
 >
-    <i class="material-icons {open ? 'spin' : ''}" style="transition: {duration}ms ease-in-out"
-        >chevron_right</i
-    >
+    <svg viewBox="0 0 100 100" style="width: 1em; height: 1em">
+        <polyline
+            points="35,25 60,50 35,75"
+            class={open ? "spin" : ""}
+            stroke-width="10px"
+            stroke={header_color}
+            fill="none"
+            style="transition: {duration}ms ease-in-out"
+        />
+    </svg>
     <span style="padding-left: 1em">{@html title}</span>
 </div>
 <div
@@ -32,6 +45,10 @@
         @media screen and (max-width: 1000px) {
             --width: 75%;
         }
+    }
+
+    polyline {
+        transform-origin: 50% 50%;
     }
 
     .spin {

@@ -1,6 +1,10 @@
 <script lang="ts">
     export let foreground: string = "#009688";
     export let background: string = "#00968860";
+
+    export let small_stroke: number = 5;
+    export let large_stroke: number = 4;
+
     export let size: number = 100;
     export let text: string | string[] = ["Loading", "Loading.", "Loading..", "Loading..."];
 
@@ -24,14 +28,14 @@
             id="small"
             points="50,86 81.2,32 18.6,32"
             stroke={background}
-            stroke-width="5"
+            stroke-width={small_stroke}
             fill="none"
         />
         <polygon
             id="large"
             points="50,95 89,27.5 11,27.5"
             stroke={foreground}
-            stroke-width="4"
+            stroke-width={large_stroke}
             fill="none"
         />
     </svg>

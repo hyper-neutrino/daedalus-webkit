@@ -25,13 +25,13 @@
 <svelte:window bind:scrollY={y} />
 
 <div style={sticky ? "position: fixed; left: 0; top: 0; width: 100%" : ""}>
-    <nav style="--height: {height_}px; --foreground: {foreground}">
+    <nav style="height: {height_}px; color: {foreground}">
         <slot />
     </nav>
 
     <div
         class="bg"
-        style="--height: {height_}px; --background: {background}; --opacity: {opacity_}%"
+        style="height: {height_}px; background-color: {background}; opacity: {opacity_}%"
     />
 </div>
 
@@ -41,17 +41,12 @@
     nav {
         position: absolute;
         width: 100%;
-        color: var(--foreground);
-        height: var(--height);
         z-index: 100;
     }
 
     .bg {
         position: absolute;
         width: 100%;
-        background-color: var(--background);
-        opacity: var(--opacity);
-        height: var(--height);
         z-index: 90;
     }
 </style>
